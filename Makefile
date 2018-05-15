@@ -23,9 +23,10 @@ clean: clean-mods
 	rm $(MODS_HOOKLIB)
 
 src/%/pub/.keep: $(PUB_FILES)
-	ln -s ../../pub $(@D)
+	@ln -s ../../pub $(@D)
 
 out/mods_%.so: src/%/*.nim lib/libminecraftpe.so
+	@echo [BUILD MOD $(@F)]
 	@nim c -o:$@ -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
 	@strip $@
 
