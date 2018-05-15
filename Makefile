@@ -25,6 +25,10 @@ clean: clean-mods
 src/%/pub/.keep: $(PUB_FILES)
 	ln -s ../../pub $(@D)
 
-out/mods_%.so: src/%/*.nim
+out/mods_%.so: src/%/*.nim lib/libminecraftpe.so
 	@nim c -o:$@ -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
 	@strip $@
+
+lib/libminecraftpe.so:
+	@echo You may need to put libminecraftpe.so to out directory.
+	@exit 1
