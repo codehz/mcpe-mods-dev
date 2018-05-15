@@ -2,3 +2,4 @@
 .vscode
 *.o
 nimcache
+src/*/pub
