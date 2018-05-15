@@ -9,4 +9,4 @@ hook "_ZN17MinecraftEventing24fireEventPlayerMessageMeERKSsS1_":
     echo("§l * ", sender, " ", content)
 
 proc mod_init(): void {. cdecl, exportc .} =
-  echo "Loaded"
+  echo "Chat Log Loaded"

@@ -22,7 +22,7 @@ clean-mods:
 clean: clean-mods
 	rm $(MODS_HOOKLIB)
 
-src/%/pub/.keep: $(PUB_FILES)
+src/%/pub/.keep: pub/.keep
 	@ln -s ../../pub $(@D)
 
 out/mods_%.so: src/%/*.nim lib/libminecraftpe.so
