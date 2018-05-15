@@ -31,5 +31,5 @@ out/mods_%.so: src/%/*.nim lib/libminecraftpe.so
 	@strip $@
 
 lib/libminecraftpe.so:
-	@echo You may need to put libminecraftpe.so to out directory.
+	@echo You may need to put libminecraftpe.so to lib directory.
 	@exit 1
