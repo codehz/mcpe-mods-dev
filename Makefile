@@ -25,7 +25,7 @@ clean: clean-mods
 src/%/pub/.keep: pub/.keep
 	@ln -s ../../pub $(@D)
 
-out/mods_%.so: src/%/*.nim lib/libminecraftpe.so
+out/mods_%.so: src/%/*.nim lib/libminecraftpe.so pub/*.nim
 	@echo [BUILD MOD $(@F)]
 	@nim c -o:$@ -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
 	@strip $@

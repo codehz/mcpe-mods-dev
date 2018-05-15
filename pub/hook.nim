@@ -7,14 +7,39 @@ macro hook*(head, body: untyped): untyped =
   let linkName = head.strVal
   body.expectLen(1)
   let procDef = body[0]
-  let funcName = procDef[0].ident
+  var exported = false
+  var funcName = "".toNimIdent
+  procDef[0].expectKind(nnkIdent)
+  if procDef[0].kind == nnkPostfix:
+    exported = true
+    funcName = procDef[0][1].ident
+  else:
+    funcName = procDef[0].ident
   let params = procDef[3]
-  let fnBody = procDef[6]
+  let pragmas = procDef[4]
+  var fnBody = procDef[6]
 
   let reflIdent = ident($funcName & "Refl")
   let origIdent = ident($funcName & "Orig")
   let realIdent = newIdentNode(funcName)
-  
+
+  var defReal = realIdent
+  if exported:
+    defReal = nnkPostfix.newTree(
+      ident("*"),
+      realIdent
+    )
+
+  if pragmas.kind == nnkPragma and pragmas.len == 1 and $pragmas[0].ident == "refl":
+    var callNode = nnkCall.newTree(reflIdent)
+    var skip = true
+    for param in params:
+      if skip:
+        skip = false
+        continue
+      callNode = callNode.add(param[0])
+    fnBody = fnBody.add(callNode)
+
   nnkStmtList.newTree(
     nnkVarSection.newTree(
       nnkIdentDefs.newTree(
@@ -45,7 +70,7 @@ macro hook*(head, body: untyped): untyped =
       newEmptyNode()
     ),
     nnkProcDef.newTree(
-      realIdent,
+      defReal,
       newEmptyNode(),
       newEmptyNode(),
       params,
