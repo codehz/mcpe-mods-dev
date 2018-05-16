@@ -44,17 +44,17 @@ proc readCfg(filename: string) =
             temp.add(item.getStr)
           execMap.add(key, temp)
           echo("\t", key, ":\n\t\t", temp.join("\n\t\t"))
-      echo "§2[Welcome Mod]Loaded"
+      echo "§2[Welcome Mod] Loaded"
     except IOError:
-      echo "§4[Welcome Mod]§kI/O Exception"
+      echo "§4[Welcome Mod] §kI/O Exception"
     except JsonParsingError:
-      echo "§4[Welcome Mod]§kJSON parsed failed"
+      echo "§4[Welcome Mod] §kJSON parsed failed"
     except FieldError:
-      echo "§4[Welcome Mod]§kJSON parsed failed(Field's type mismatch)"
+      echo "§4[Welcome Mod] §kJSON parsed failed(Field's type mismatch)"
     except:
-      echo "§4[Welcome Mod]§kUnknown error"
+      echo "§4[Welcome Mod] §kUnknown error"
   else:
-    echo("§4[Welcome Mod]§kNo config found(", filename,"), Fallback to default config: ", execMap)
+    echo("§4[Welcome Mod] §kNo config found(", filename,"), Fallback to default config: ", execMap)
 
 hook "_ZNK9minecraft3api15PlayerInterface23handlePlayerJoinedEventER6Player":
   proc onPlayerJoin(self: pointer, player: Player): void {. refl .} =
@@ -74,6 +74,5 @@ hook "_ZNK9minecraft3api15PlayerInterface21handlePlayerLeftEventER6Player":
       ExecCommand(item.replace("{{player}}", name))
 
 proc mod_init(): void {. cdecl, exportc .} =
-  echo "Welcome Mod Loaded"
   let cfg = getCurrentDir() / "games" / "welcome.json"
   readCfg(cfg)
