@@ -12,13 +12,12 @@ let path_log = getCurrentDir() / "games" / "whitelist.log"
 
 var whitelist = initSet[string](64)
 
-whitelist.incl("d837d210-5a0e-b523-3c5a-c5833f98c49d")
+whitelist.incl("23b50e5a-10d2-37d8-9dc4-983f83c55a3c")
 
 func readWhitelist() =
   try:
     whitelist.clear
     for token in lines(path_whitelist):
-      echo "LEN: " & $token.len
       if token.len >= 36:
         whitelist.incl(token[0..<36])
         echo "§2[Whitelist Mod] Added <" & token[0..<36] & ">"
@@ -31,24 +30,24 @@ proc showUuid(ba: array[0x10, byte]): string {.noSideEffect.} =
 
   result = newString(36)
   for i in 0..<4:
-    result[2*i] = hexChars[int ba[i] shr 4 and 0xF]
-    result[2*i+1] = hexChars[int ba[i] and 0xF]
+    result[2*i] = hexChars[int ba[7-i] shr 4 and 0xF]
+    result[2*i+1] = hexChars[int ba[7-i] and 0xF]
   result[8] = '-'
   for i in 4..<6:
-    result[2*i+1] = hexChars[int ba[i] shr 4 and 0xF]
-    result[2*i+2] = hexChars[int ba[i] and 0xF]
+    result[2*i+1] = hexChars[int ba[7-i] shr 4 and 0xF]
+    result[2*i+2] = hexChars[int ba[7-i] and 0xF]
   result[13] = '-'
   for i in 6..<8:
-    result[2*i+2] = hexChars[int ba[i] shr 4 and 0xF]
-    result[2*i+3] = hexChars[int ba[i] and 0xF]
+    result[2*i+2] = hexChars[int ba[7-i] shr 4 and 0xF]
+    result[2*i+3] = hexChars[int ba[7-i] and 0xF]
   result[18] = '-'
   for i in 8..<10:
-    result[2*i+3] = hexChars[int ba[i] shr 4 and 0xF]
-    result[2*i+4] = hexChars[int ba[i] and 0xF]
+    result[2*i+3] = hexChars[int ba[23-i] shr 4 and 0xF]
+    result[2*i+4] = hexChars[int ba[23-i] and 0xF]
   result[23] = '-'
   for i in 10..<16:
-    result[2*i+4] = hexChars[int ba[i] shr 4 and 0xF]
-    result[2*i+5] = hexChars[int ba[i] and 0xF]
+    result[2*i+4] = hexChars[int ba[23-i] shr 4 and 0xF]
+    result[2*i+5] = hexChars[int ba[23-i] and 0xF]
 
 proc `$`(uuid: UUID) : string =
   ((array[0x10, byte])uuid).showUuid
