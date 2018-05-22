@@ -3,3 +3,4 @@
 *.o
 nimcache
 src/*/pub
+toolchain.mk
