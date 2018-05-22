@@ -9,7 +9,7 @@ MODS_HOOKLIB = $(patsubst src/%/main.nim,src/%/pub, $(MODS_MAIN))
 
 CPPSUPPORT = $(wildcard cppsupport/*.cpp)
 
-export CXXFLAGS := -I$(CURDIR)/minecraft-headers -fno-rtti -O3 -fPIC -std=c++14
+export CXXFLAGS := -I$(CURDIR)/minecraft-headers -fno-rtti -O3 -fPIC -std=c++14 -Wno-invalid-offsetof
 
 PUB_FILES = $(wildcard pub/*.nim)
 
@@ -36,7 +36,7 @@ out/lib%.so: lib/%.nim
 	@ls out
 	@echo $@ - $^
 
-out/mods_%.so: src/%/*.nim $(wildcard src/%/Makefile) src/%/*.cpp lib/libminecraftpe.so $(wildcard pub/*.nim) $(patsubst lib/%.nim, out/lib%.so,$(wildcard lib/*.nim))
+out/mods_%.so: src/%/*.nim $(wildcard src/%/Makefile) $(wildcard src/%/*.cpp) lib/libminecraftpe.so $(wildcard pub/*.nim) $(patsubst lib/%.nim, out/lib%.so,$(wildcard lib/*.nim))
 	@echo [BUILD MOD $(@F)] $^
 	(cd $(<D) && [ -e Makefile ] && (make || exit 1) || exit 0)
 	nim c -o:$@ -d:ModBase=$(<D) -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
