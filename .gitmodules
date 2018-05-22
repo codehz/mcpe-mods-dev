@@ -1,0 +1,3 @@
+[submodule "minecraft-headers"]
+	path = minecraft-headers
+	url = https://github.com/MCMrARM/minecraft-headers
