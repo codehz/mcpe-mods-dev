@@ -82,4 +82,4 @@ hook "_ZN17MinecraftEventing26fireEventPlayerMessageChatERKSsS1_":
     detectSpam $sender
 
 proc mod_init(): void {. cdecl, exportc .} =
-  readCfg(getCurrentDir() / "games" / "kick_detector.json")
+  readCfg(getCurrentDir() / "games" / "spam_detector.json")
