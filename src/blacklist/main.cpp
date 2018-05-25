@@ -122,7 +122,7 @@ struct BanCommand : Command
   ~BanCommand() override = default;
   static void setup(CommandRegistry &registry)
   {
-    registry.registerCommand("ban", "Ban player", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerCommand("ban", "Ban player", (CommandPermissionLevel)2, (CommandFlag)0, (CommandFlag)0);
     registry.registerOverload<BanCommand>("ban", CommandVersion(1, INT_MAX),
                                           CommandParameterData(CommandSelectorPlayer::type_id(), &CommandRegistry::parse<CommandSelector<Player>>, "target", (CommandParameterDataType)0, nullptr, offsetof(BanCommand, target), false, -1));
   }
@@ -149,7 +149,7 @@ struct BanUUIDCommand : Command
   ~BanUUIDCommand() override = default;
   static void setup(CommandRegistry &registry)
   {
-    registry.registerCommand("banuuid", "Ban player by UUID", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerCommand("banuuid", "Ban player by UUID", (CommandPermissionLevel)2, (CommandFlag)0, (CommandFlag)0);
     registry.registerOverload<BanUUIDCommand>("banuuid", CommandVersion(1, INT_MAX),
                                               CommandParameterData(CommandMessage::type_id(), &CommandRegistry::parse<CommandMessage>, "uuid", (CommandParameterDataType)0, nullptr, offsetof(BanUUIDCommand, uuid), false, -1));
   }
@@ -174,7 +174,7 @@ struct PardonCommand : Command {
   ~PardonCommand() override = default;
   static void setup(CommandRegistry &registry)
   {
-    registry.registerCommand("pardon", "Pardon player by UUID", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerCommand("pardon", "Pardon player by UUID", (CommandPermissionLevel)2, (CommandFlag)0, (CommandFlag)0);
     registry.registerOverload<PardonCommand>("pardon", CommandVersion(1, INT_MAX),
                                               CommandParameterData(CommandMessage::type_id(), &CommandRegistry::parse<CommandMessage>, "pardon", (CommandParameterDataType)0, nullptr, offsetof(PardonCommand, uuid), false, -1));
   }
@@ -200,7 +200,7 @@ struct KickCommand : Command
   ~KickCommand() override = default;
   static void setup(CommandRegistry &registry)
   {
-    registry.registerCommand("kick", "Kick player", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerCommand("kick", "Kick player", (CommandPermissionLevel)2, (CommandFlag)0, (CommandFlag)0);
     registry.registerOverload<KickCommand>("kick", CommandVersion(1, INT_MAX),
                                            CommandParameterData(CommandSelectorPlayer::type_id(), &CommandRegistry::parse<CommandSelector<Player>>, "target", (CommandParameterDataType)0, nullptr, offsetof(KickCommand, target), false, -1));
   }
@@ -227,7 +227,7 @@ struct BlacklistCommand : Command
   ~BlacklistCommand() override = default;
   static void setup(CommandRegistry &registry)
   {
-    registry.registerCommand("blacklist", "Show blacklist", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerCommand("blacklist", "Show blacklist", (CommandPermissionLevel)2, (CommandFlag)0, (CommandFlag)0);
     registry.registerOverload<BlacklistCommand>("blacklist", CommandVersion(1, INT_MAX));
   }
 
