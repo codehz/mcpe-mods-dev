@@ -30,6 +30,7 @@ proc readCfg(filename: string) =
             continue
           limits.add(limit)
       if parsed.hasKey("commands") and parsed["commands"].kind == JArray:
+        commands = newSeqOfCap[string](parsed["commands"].len)
         for cmd in parsed["commands"]:
           commands.add(cmd.getStr())
       echo "§2[Spam Detector] §kLoaded"
