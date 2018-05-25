@@ -220,8 +220,30 @@ struct KickCommand : Command
   }
 };
 
+extern "C" void showBlacklist(CommandOutput &outp);
+
+struct BlacklistCommand : Command
+{
+  ~BlacklistCommand() override = default;
+  static void setup(CommandRegistry &registry)
+  {
+    registry.registerCommand("blacklist", "Show blacklist", (CommandPermissionLevel)3, (CommandFlag)0, (CommandFlag)0);
+    registry.registerOverload<BlacklistCommand>("blacklist", CommandVersion(1, INT_MAX));
+  }
+
+  void execute(CommandOrigin const &origin, CommandOutput &outp) override
+  {
+    showBlacklist(outp);
+    outp.success();
+  }
+};
+
 extern "C"
 {
+  void appendOutput(CommandOutput &outp, char *data) {
+    outp.addMessage(data);
+  }
+
   UUID *createUUID(const char* str) {
     static UUID uuid;
     uuid = getUUID(str);
@@ -238,6 +260,7 @@ extern "C"
     BanCommand::setup(registry);
     BanUUIDCommand::setup(registry);
     PardonCommand::setup(registry);
+    BlacklistCommand::setup(registry);
     KickCommand::setup(registry);
   }
 }

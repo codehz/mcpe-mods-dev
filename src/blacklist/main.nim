@@ -5,6 +5,7 @@ const ModBase {.strdefine.}: string = ""
 type
   Player = distinct pointer
   ServerNetworkHandler = distinct pointer
+  CommandOutput = distinct pointer
 
 var blacklist = initSet[string](64)
 let path_blacklist = getCurrentDir() / "games" / "blacklist.txt"
@@ -98,7 +99,14 @@ proc createUUID(str: cstring): pointer {.importc.}
 
 proc bannedStr(): ptr cstring {.importc.}
 
-var isFirst = true
+var
+  isFirst = true
+
+proc appendOutput(outp: CommandOutput, data: cstring) {.importc.}
+
+proc showBlacklist(outp: CommandOutput) {.exportc.} =
+  for item in blacklist:
+    outp.appendOutput(item)
 
 hook "_ZN20ServerNetworkHandler24updateServerAnnouncementEv":
   proc setSNH(snh: ServerNetworkHandler) {.refl.} =
