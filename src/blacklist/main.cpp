@@ -136,7 +136,7 @@ struct BanCommand : Command
       {
         banPlayer(&ent->uuid, "Banned");
         kickPlayer(ent);
-        outp.addMessage("§4[Blacklist Mod] Baned " + stringify(ent->uuid));
+        outp.addMessage("§4[Blacklist Mod] Banned " + stringify(ent->uuid));
       }
     }
     outp.success();
