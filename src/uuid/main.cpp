@@ -118,4 +118,10 @@ extern "C"
   {
     UuidCommand::setup(registry);
   }
+
+  std::string *getUUID(Player *player) {
+    static std::string tmp;
+    tmp = stringify(player->uuid);
+    return &tmp;
+  }
 }
