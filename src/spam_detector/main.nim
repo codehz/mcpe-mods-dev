@@ -6,7 +6,7 @@ type
 var
   record = initTable[string, seq[Deque[int64]]](16)
   limits: seq[Limit] = @[(5, 5), (10, 30)]
-  commands = @["tellraw @a Spam detected: {{player}}", "kick {{player}}"]
+  commands = @["tellraw @a Spam detected: {{player}}", "kick \"{{player}}\""]
 
 proc readCfg(filename: string) =
   if existsFile(filename):
