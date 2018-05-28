@@ -30,9 +30,9 @@ struct UUID
   {
     os << std::hex << std::setfill('0') << std::setw(8)
        << uuid.p0 << '-' << std::setw(4)
-       << uuid.p1 << '-'
-       << uuid.p2 << '-'
-       << uuid.p3 << '-'
+       << uuid.p1 << '-' << std::setw(4)
+       << uuid.p2 << '-' << std::setw(4)
+       << uuid.p3 << '-' << std::setw(4)
        << uuid.p4 << std::setw(8) << uuid.pr;
     return os;
   }
