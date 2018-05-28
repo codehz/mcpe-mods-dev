@@ -5,7 +5,8 @@ type
   Vec3[T] = tuple[x, y, z: T]
 
 proc defaultSpawn(level: Level): var Vec3[int] {.importc:"_ZNK5Level15getDefaultSpawnEv".}
-proc level(player: Player): Level {.importc: "_ZN6Entity8getLevelEv".}
+proc level(player: Player): Level {.importc:"_ZN6Entity8getLevelEv".}
+proc dim(player: Player): int {.importc:"_ZNK6Entity14getDimensionIdEv".}
 proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK6Entity6getPosEv".}
 proc cvt(vi: Vec3[int]): Vec3[float32] = ((float32)vi.x, (float32)vi.y, (float32)vi.z)
 
@@ -19,7 +20,7 @@ proc `<->`(a, b: Vec3[float32]): float32 = (a.x - b.x)^2 + (a.y - b.y)^2 + (a.z 
 
 hook "_ZN6Player13canUseAbilityERKSs":
   proc canUseAbility(player: Player, ability: ptr cstring): bool {.refl.} =
-    if $ability == "buildandmine" and not player.isOperator:
+    if player.dim == 0 and $ability == "buildandmine" and not player.isOperator:
       let spawn = player.level.defaultSpawn.cvt
       let pos = player.pos()
       if (spawn <-> pos) < 2500:
