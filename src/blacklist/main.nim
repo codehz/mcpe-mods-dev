@@ -40,9 +40,6 @@ var
 
 proc setupCommands(registry: pointer) {.importc.}
 
-proc addToBlacklist(snh: ServerNetworkHandler, uuid: pointer, reason: ptr cstring) {.importc:"_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs".}
-proc removeFromBlacklist(snh: ServerNetworkHandler, uuid: pointer, reason: ptr cstring) {.importc:"_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs".}
-
 proc activeWhitelist(minecraft: Minecraft) {. importc: "_ZN9Minecraft17activateWhitelistEv" .}
 proc kickPlayer(snh: ServerNetworkHandler, p: Player) {.importc:"_ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayer".}
 
@@ -70,18 +67,18 @@ proc showUuid(ba: array[0x10, byte]): string {.noSideEffect.} =
     result[2*i+4] = hexChars[int ba[23-i] shr 4 and 0xF]
     result[2*i+5] = hexChars[int ba[23-i] and 0xF]
 
-proc banPlayer(uuid: ptr array[0x10, byte], reason: ptr cstring) {.exportc.} =
-  handler.addToBlacklist(uuid, reason)
+proc banPlayer(uuid: var array[0x10, byte], reason: ptr cstring) {.exportc.} =
+  blacklist.incl(uuid.showUuid)
   try:
     let stream = newFileStream(path_blacklist, fmAppend)
     defer: stream.close()
-    stream.writeLine(uuid[].showUuid)
+    stream.writeLine(uuid.showUuid)
   except:
     echo "§4[Blacklist Mod] Blacklist Not Saved"
 
-proc pardonPlayer(uuid: ptr array[0x10, byte], reason: ptr cstring) {.exportc.} =
-  handler.removeFromBlacklist(uuid, reason)
-  let uuitStr = uuid[].showUuid
+proc pardonPlayer(uuid: var array[0x10, byte], reason: ptr cstring) {.exportc.} =
+  let uuitStr = uuid.showUuid
+  blacklist.excl(uuitStr)
   try:
     let file = open(path_blacklist, fmRead)
     defer: close(file)
@@ -96,10 +93,6 @@ proc pardonPlayer(uuid: ptr array[0x10, byte], reason: ptr cstring) {.exportc.} 
 
 proc kickPlayer(p: Player) {. cdecl, exportc .} =
   handler.kickPlayer(p)
-
-proc createUUID(str: cstring): pointer {.importc.}
-
-proc bannedStr(): ptr cstring {.importc.}
 
 var
   isFirst = true
@@ -116,17 +109,17 @@ hook "_ZN20ServerNetworkHandler24updateServerAnnouncementEv":
       isFirst = false
       handler = snh
       readBlacklist()
-      for item in blacklist:
-        handler.addToBlacklist(createUUID(item), bannedStr())
 
 hook "_ZN10SayCommand5setupER15CommandRegistry":
   proc setupCommand(registry: pointer) {.refl.} =
     setupCommands(registry)
 
 hook "_ZNK9Whitelist9isAllowedERKN3mce4UUIDERKSs":
-  proc isAllowed(list: pointer, uuid: var array[0x10, byte], text: var cstring): bool {.refl.} =
+  proc isAllowed(list: pointer, uuid: var array[0x10, byte], text: var cstring): bool =
     if uuid.showUuid in blacklist:
+      echo "§4[Blacklist Mod] Blocked ", uuid.showUuid
       return false
+    return true
 
 proc mod_init(): void {. cdecl, exportc .} =
   echo "Blacklist Mod Loaded"

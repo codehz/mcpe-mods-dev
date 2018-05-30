@@ -244,17 +244,6 @@ extern "C"
     outp.addMessage(data);
   }
 
-  UUID *createUUID(const char* str) {
-    static UUID uuid;
-    uuid = getUUID(str);
-    return &uuid;
-  }
-
-  std::string *bannedStr() {
-    static std::string str = "Banned";
-    return &str;
-  }
-
   void setupCommands(CommandRegistry &registry)
   {
     BanCommand::setup(registry);
