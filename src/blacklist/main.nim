@@ -6,6 +6,7 @@ type
   Player = distinct pointer
   ServerNetworkHandler = distinct pointer
   CommandOutput = distinct pointer
+  Minecraft = distinct pointer
 
 var blacklist = initSet[string](64)
 let path_blacklist = getCurrentDir() / "games" / "blacklist.txt"
@@ -42,6 +43,7 @@ proc setupCommands(registry: pointer) {.importc.}
 proc addToBlacklist(snh: ServerNetworkHandler, uuid: pointer, reason: ptr cstring) {.importc:"_ZN20ServerNetworkHandler14addToBlacklistERKN3mce4UUIDERKSs".}
 proc removeFromBlacklist(snh: ServerNetworkHandler, uuid: pointer, reason: ptr cstring) {.importc:"_ZN20ServerNetworkHandler19removeFromBlacklistERKN3mce4UUIDERKSs".}
 
+proc activeWhitelist(minecraft: Minecraft) {. importc: "_ZN9Minecraft17activateWhitelistEv" .}
 proc kickPlayer(snh: ServerNetworkHandler, p: Player) {.importc:"_ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayer".}
 
 proc showUuid(ba: array[0x10, byte]): string {.noSideEffect.} =
@@ -121,5 +123,19 @@ hook "_ZN10SayCommand5setupER15CommandRegistry":
   proc setupCommand(registry: pointer) {.refl.} =
     setupCommands(registry)
 
+hook "_ZNK9Whitelist9isAllowedERKN3mce4UUIDERKSs":
+  proc isAllowed(list: pointer, uuid: var array[0x10, byte], text: var cstring): bool {.refl.} =
+    if uuid.showUuid in blacklist:
+      return false
+
 proc mod_init(): void {. cdecl, exportc .} =
   echo "Blacklist Mod Loaded"
+
+var mc: Minecraft = nil
+
+hook "_ZN9Minecraft12initCommandsEv":
+  proc initCommands(minecraft: Minecraft) {. refl .} =
+    mc = minecraft
+
+proc mod_set_server(_: pointer): void {. cdecl, exportc .} =
+  mc.activeWhitelist
