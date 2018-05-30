@@ -32,14 +32,14 @@ lib/%.o: cppsupport/%.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 out/lib%.so: lib/%.nim
-	nim c -o:$@ -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $<
+	nim c -o:$@ -d:noSignalHandler -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $<
 	@ls out
 	@echo $@ - $^
 
 out/mods_%.so: src/%/*.nim $(wildcard src/%/Makefile) $(wildcard src/%/*.cpp) lib/libminecraftpe.so $(wildcard pub/*.nim) $(patsubst lib/%.nim, out/lib%.so,$(wildcard lib/*.nim))
 	@echo [BUILD MOD $(@F)] $^
 	(cd $(<D) && [ -e Makefile ] && (make || exit 1) || exit 0)
-	nim c -o:$@ -d:ModBase=$(<D) -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
+	nim c -o:$@ -d:noSignalHandler -d:ModBase=$(<D) -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $(<D)/main.nim
 	@strip $@
 
 lib/libminecraftpe.so:
