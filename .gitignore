@@ -4,3 +4,4 @@
 nimcache
 src/*/pub
 toolchain.mk
+lib
