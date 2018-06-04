@@ -1,7 +1,6 @@
-{.passL:"lib/packet.o -lstdc++".}
+import player
 
-type
-  Player* = distinct pointer
+{.passL:"lib/packet.o -lstdc++".}
 
 proc sendMessage(player, packet: pointer) {.importc: "_ZNK12ServerPlayer17sendNetworkPacketER6Packet".}
 proc ServerPlayer_sendNetworkPacket(player, packet: pointer) {.exportc.} = sendMessage(player, packet)
