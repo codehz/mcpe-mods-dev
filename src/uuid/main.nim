@@ -1,4 +1,4 @@
-import pub.hook, pub.player, strformat, os, streams
+import pub.hook, pub.player, pub.uuid, strformat, os, streams
 const ModBase {.strdefine.}: string = ""
 {.passL: &"{ModBase}/cpp.o -lstdc++".}
 

@@ -1,9 +1,8 @@
-import pub.hook, pub.cppstring, strformat, strutils, os, sets, streams
+import pub.hook, pub.player, pub.cppstring, strformat, strutils, os, sets, streams
 const ModBase {.strdefine.}: string = ""
 {.passL: &"{ModBase}/cpp.o -lstdc++".}
 
 type
-  Player = distinct pointer
   ServerNetworkHandler = distinct pointer
   CommandOutput = distinct pointer
   Minecraft = distinct pointer

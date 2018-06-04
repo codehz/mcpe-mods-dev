@@ -1,16 +1,4 @@
-import pub.hook
-import pub.interp
-
-import os
-import json
-import tables
-import streams
-import strutils
-
-type
-  Player = distinct pointer
-
-proc name(player: Player) : var cstring {. importc: "_ZNK6Entity10getNameTagEv" .}
+import pub.hook, pub.interp, pub.player, os, json, tables, streams, strutils
 
 var
   execWhenJoin : seq[string] = @[]
@@ -56,22 +44,20 @@ proc readCfg(filename: string) =
   else:
     echo("§4[Welcome Mod] §kNo config found(", filename,"), Fallback to default config: ", execMap)
 
-hook "_ZNK9minecraft3api15PlayerInterface23handlePlayerJoinedEventER6Player":
-  proc onPlayerJoin(self: pointer, player: Player): void {. refl .} =
-    let name = $player.name
-    echo(name, " Joined.")
-    for item in execWhenJoin:
+onPlayerJoined do (player: Player):
+  let name = $player.name
+  echo(name, " Joined.")
+  for item in execWhenJoin:
+    ExecCommand(item.replace("{{player}}", name))
+  if execMap.hasKey(name):
+    for item in execMap[name]:
       ExecCommand(item.replace("{{player}}", name))
-    if execMap.hasKey(name):
-      for item in execMap[name]:
-        ExecCommand(item.replace("{{player}}", name))
 
-hook "_ZNK9minecraft3api15PlayerInterface21handlePlayerLeftEventER6Player":
-  proc onPlayerLeft(self: pointer, player: Player): void {. refl .} =
-    let name = $player.name
-    echo(name, " Left.")
-    for item in execWhenLeft:
-      ExecCommand(item.replace("{{player}}", name))
+onPlayerLeft do (player: Player):
+  let name = $player.name
+  echo(name, " Left.")
+  for item in execWhenLeft:
+    ExecCommand(item.replace("{{player}}", name))
 
 proc mod_init(): void {. cdecl, exportc .} =
   let cfg = getCurrentDir() / "games" / "welcome.json"

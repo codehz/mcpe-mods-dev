@@ -1,9 +1,8 @@
-import pub.hook, strformat, strutils
+import pub.hook, pub.player, strformat, strutils
 const ModBase {.strdefine.}: string = ""
 {.passL: &"{ModBase}/cpp.o -lstdc++".}
 
 type
-  Player = distinct pointer
   BlockEntity = distinct ptr ptr pointer
   BlockPos = distinct pointer
 
