@@ -1,4 +1,4 @@
-import pub.hook, pub.message, pub.cppstring, parsecfg, strutils, os, math
+import pub.hook, pub.message, pub.player, pub.cppstring, parsecfg, strutils, os, math
 
 type
   Level = distinct pointer
