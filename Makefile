@@ -28,10 +28,13 @@ clean: clean-mods
 src/%/pub/.keep: pub/.keep
 	@ln -s ../../pub $(@D)
 
+lib/pub/.keep: pub/.keep
+	@ln -s ../pub ./lib/pub
+
 lib/%.o: cppsupport/%.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
-out/lib%.so: lib/%.nim
+out/lib%.so: lib/%.nim lib/pub/.keep
 	nim c -o:$@ -d:noSignalHandler -l:-L./lib -l:-lminecraftpe -l:lib/jmp.s -l:-Wl,-soname,$(@F) --app:lib --cpu:i386 --os:android --cc:clang -d:release $<
 	@ls out
 	@echo $@ - $^
