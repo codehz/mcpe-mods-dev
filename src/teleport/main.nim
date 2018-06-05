@@ -13,6 +13,7 @@ type
 proc name(player: Player) : var cstring {. importc: "_ZNK6Entity10getNameTagEv" .}
 proc defaultSpawnPos(level: Level): var Vec3[int] {.importc:"_ZNK5Level15getDefaultSpawnEv".}
 proc spawnPos(player: Player): Vec3[int] {.importc:"_ZN6Player16getSpawnPositionEv".}
+proc dim(player: Player): int {.importc:"_ZNK6Entity14getDimensionIdEv".}
 proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK6Entity6getPosEv".}
 proc cvt(vi: Vec3[int]): Vec3[float32] = ((float32)vi.x, (float32)vi.y, (float32)vi.z)
 
@@ -134,7 +135,7 @@ proc processTPA(player, target: Player): cstring {. cdecl, exportc .} =
     if data.kind == JInt:
       case data.getInt():
       of 0: # Accept
-        teleport(nil, target, player.pos, zeroPoint, 0)
+        teleport(nil, player, target.pos, zeroPoint, target.dim)
       of 2: # Suspend
         tpCooldown[xuuid] = getTime() + 5.minutes
       of 3: # Block
