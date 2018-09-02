@@ -5,9 +5,9 @@ type
   Vec3[T] = tuple[x, y, z: T]
 
 proc defaultSpawn(level: Level): var Vec3[int] {.importc:"_ZNK5Level15getDefaultSpawnEv".}
-proc level(player: Player): Level {.importc:"_ZN6Entity8getLevelEv".}
-proc dim(player: Player): int {.importc:"_ZNK6Entity14getDimensionIdEv".}
-proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK6Entity6getPosEv".}
+proc level(player: Player): Level {.importc:"_ZN5Actor8getLevelEv".}
+proc dim(player: Player): int {.importc:"_ZNK5Actor14getDimensionIdEv".}
+proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK5Actor6getPosEv".}
 proc cvt(vi: Vec3[int]): Vec3[float32] = ((float32)vi.x, (float32)vi.y, (float32)vi.z)
 
 let op = allocString("op")
