@@ -40,7 +40,8 @@ var
 proc setupCommands(registry: pointer) {.importc.}
 
 proc activeWhitelist(minecraft: Minecraft) {. importc: "_ZN9Minecraft17activateWhitelistEv" .}
-proc kickPlayer(snh: ServerNetworkHandler, p: Player) {.importc:"_ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayer".}
+proc kickPlayer(snh: ServerNetworkHandler, p: Player,b: bool) {.importc:"_ZN20ServerNetworkHandler13_onPlayerLeftEP12ServerPlayer".}
+ #FIXME: ServerNetworkHandler::_onPlayerLeft(ServerPlayer*, bool) ,this guy got a extra boolean!
 
 proc showUuid(ba: array[0x10, byte]): string {.noSideEffect.} =
   const hexChars = "0123456789abcdef"

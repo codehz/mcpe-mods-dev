@@ -10,14 +10,14 @@ type
   Vec3[T] = tuple[x, y, z: T]
   XTag = enum Spawn = 0, Home, Blacklist
 
-proc name(player: Player) : var cstring {. importc: "_ZNK6Entity10getNameTagEv" .}
+proc name(player: Player) : var cstring {. importc: "_ZNK5Actor10getNameTagEv" .}
 proc defaultSpawnPos(level: Level): var Vec3[int] {.importc:"_ZNK5Level15getDefaultSpawnEv".}
 proc spawnPos(player: Player): Vec3[int] {.importc:"_ZN6Player16getSpawnPositionEv".}
-proc dim(player: Player): int {.importc:"_ZNK6Entity14getDimensionIdEv".}
-proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK6Entity6getPosEv".}
+proc dim(player: Player): int {.importc:"_ZNK5Actor14getDimensionIdEv".}
+proc pos(player: Player): var Vec3[float32] {.importc:"_ZNK5Actor6getPosEv".}
 proc cvt(vi: Vec3[int]): Vec3[float32] = ((float32)vi.x, (float32)vi.y, (float32)vi.z)
 
-proc teleport(none: pointer, player: Player, target: Vec3[float32], center: var Vec3[float32], dim: int) {.importc:"_ZNK15TeleportCommand8teleportER6Entity4Vec3PS2_11DimensionId".}
+proc teleport(none: pointer, player: Player, target: Vec3[float32], center: var Vec3[float32], dim: int) {.importc:"_ZNK15TeleportCommand8teleportER5Actor4Vec3PS2_11DimensionId".}
 
 var
   zeroPoint: Vec3[float32] = (x: 0.0f, y: -1.0f, z:0.0f)

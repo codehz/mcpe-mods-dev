@@ -12,7 +12,7 @@ proc getBlockEntityName(entity: BlockEntity): cstring {.importc.}
 proc sendMessage(player, packet: pointer) {.importc: "_ZNK12ServerPlayer17sendNetworkPacketER6Packet".}
 proc ServerPlayer_sendNetworkPacket(player, packet: pointer) {.exportc.} = sendMessage(player, packet)
 proc sendSystemMessage(player: Player, msg: cstring) {.importc.}
-proc shulkerBoxD2() {.importc:"_ZN21ShulkerBoxBlockEntityD2Ev".}
+proc shulkerBoxD2() {.importc:"_ZN20ShulkerBoxBlockActorD2Ev".}
 
 proc checkShulkerBox(target: BlockEntity): bool =
   return ((ptr ptr pointer)target)[][] == shulkerBoxD2

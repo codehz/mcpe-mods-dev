@@ -10,12 +10,12 @@ type
 proc hash*(player: Player): Hash {.borrow.}
 proc `==`*(a, b: Player): bool {.borrow.}
 
-proc getName(player: Player) : var cstring {. importc: "_ZNK6Entity10getNameTagEv" .}
+proc getName(player: Player) : var cstring {. importc: "_ZNK5Actor10getNameTagEv" .}
 
 proc onPlayerJoined*(listener: PlayerEventListener) {.importc.}
 proc onPlayerLeft*(listener: PlayerEventListener) {.importc.}
 proc player*(id: NetworkIdentifier): Player {.importc.}
-proc level*(player: Player): Level {.importc:"_ZN6Entity8getLevelEv".}  
+proc level*(player: Player): Level {.importc:"_ZN5Actor8getLevelEv".}  
 proc name*(player: Player): string = $player.getName()
 proc uuid*(player: Player): UUID = cast[ptr UUID](cast[ptr int](player) + 1130)[]
 
